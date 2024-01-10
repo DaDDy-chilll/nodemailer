@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     password: { type: String, required: true, minlength: 3, maxlength: 1024 },
-    isVerifed:{type:Boolean,default:false},
+    isVerified:{type:Boolean,default:false},
     emailToken:{type:String }
   },
   {

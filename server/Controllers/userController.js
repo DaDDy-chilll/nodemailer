@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const userModel = require("../Models/userModel");
 const crypto = require("crypto");
+const { sendVerificationMail } = require("../utils/sendVerificationEmail");
 const createToken = (_id) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
@@ -36,10 +37,10 @@ const registerUser = async (req, res) => {
     user.password = await bcrypt.hash(user.password, salt);
 
     await user.save();
-
+    sendVerificationMail(user);
     const token = createToken(user._id);
 
-    res.status(200).json({ _id: user._id, name, email, token });
+    res.status(200).json({ _id: user._id, name, email, token,isVerified:user.isVerified });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -60,7 +61,7 @@ const loginUser = async (req, res) => {
 
     const token = createToken(user._id);
 
-    res.status(200).json({ _id: user._id, name: user.name, email, token });
+    res.status(200).json({ _id: user._id, name: user.name, email, token,isVerified:user.isVerified  });
   } catch (error) {
     console.log(error);
     res.status(500).json(error);
@@ -97,7 +98,7 @@ const verifyEmail = async (req,res) => {
 
     if(user) {
       user.emailToken= null;
-      user.isVerifed = true;
+      user.isVerified = true;
       await user.save();
 
       const token = createToken(user._id);
@@ -106,7 +107,7 @@ const verifyEmail = async (req,res) => {
         name:user.name,
         email:user.email,
         token,
-        isVerifed:user?.isVerifed,
+        isVerified:user?.isVerified,
       })
     }
     else res.status(404).json('Email verification failed, invalid token1')

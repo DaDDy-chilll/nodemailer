@@ -10,7 +10,7 @@ const Chat = () => {
     <Container>
       <h1>
         Email: {user?.email} -----{" "}
-        {!user?.isVerified ? (
+        {user?.isVerified ? (
           <span className="verified">verified</span>
         ) : (
           <span className="not-verified">Not Verified</span>
