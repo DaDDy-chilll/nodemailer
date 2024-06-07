@@ -6,8 +6,8 @@
   "scripts": {
     "install-client":"cd client && npm install && npm run build",
     "install-server":"cd server && npm install",
-    "start-server":"npm start --prefix server",
-    "setup-production":"npm run install-client && npm run install-server && npm start-server",
+    "start":"npm start --prefix server",
+    "setup-production":"npm run install-client && npm run install-server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "DaDDy",
